@@ -37,7 +37,7 @@
 
 Accurate calibration and robust localization are fundamental for downstream tasks in spinning actuated LiDAR applications. Existing methods, however, require parameterizing extrinsic parameters based on different mounting configurations, limiting their generalizability. Additionally, spinning actuated LiDAR inevitably scans featureless regions,  which complicates the balance between scan coverage and localization robustness. To address these challenges, this letter presents a targetless LiDAR-motor calibration (LM-Calibr) on the basis of the Denavit-Hartenberg convention and an environmental adaptive LiDAR-inertial odometry (EVA-LIO). **LM-Calibr supports calibration of LiDAR-motor systems with various mounting configurations.** Extensive experiments demonstrate its accuracy and convergence across different scenarios, mounting angles, and initial values. Additionally, **EVA-LIO adaptively selects downsample rates and map resolutions according to spatial scale**. This adaptivity enables the actuator to operate at maximum speed, thereby enhancing scan completeness while ensuring robust localization, even when LiDAR briefly scans featureless areas.
 
-![framework](figures\framework.png)
+![framework](figures/framework.png)
 
 ## 📦 Setup
 
