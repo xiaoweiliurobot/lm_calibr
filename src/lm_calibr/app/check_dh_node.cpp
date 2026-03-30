@@ -1,6 +1,7 @@
-#include "lm_calibr/rotation_lidar_calibration.h"
-#include <rclcpp/rclcpp.hpp>
 #include <ament_index_cpp/get_package_share_directory.hpp>
+#include <rclcpp/rclcpp.hpp>
+
+#include "lm_calibr/rotation_lidar_calibration.h"
 
 int main(int argc, char** argv) {
   rclcpp::init(argc, argv);
@@ -34,8 +35,8 @@ int main(int argc, char** argv) {
   node->get_parameter("init_extrinsic.phi_2", phi_2);
 
   std::vector<std::string> tmp_bag_path_array;
-  node->declare_parameter<std::vector<std::string>>(
-      "bag_path", std::vector<std::string>());
+  node->declare_parameter<std::vector<std::string>>("bag_path",
+                                                    std::vector<std::string>());
   node->get_parameter("bag_path", tmp_bag_path_array);
 
   if (tmp_bag_path_array.empty()) {
@@ -94,8 +95,7 @@ int main(int argc, char** argv) {
         Eigen::AngleAxisd(point_ptr->angle, Eigen::Vector3d::UnitZ())
             .toRotationMatrix();
 
-    Eigen::Matrix3d R_B_L =
-        R_z_theta_1 * R_x_phi_1 * R_z_theta_2 * R_x_phi_2;
+    Eigen::Matrix3d R_B_L = R_z_theta_1 * R_x_phi_1 * R_z_theta_2 * R_x_phi_2;
     Eigen::Vector3d t_B_L =
         R_z_theta_1 * R_x_phi_1 * R_z_theta_2 * t_1 + R_z_theta_1 * t_2;
 

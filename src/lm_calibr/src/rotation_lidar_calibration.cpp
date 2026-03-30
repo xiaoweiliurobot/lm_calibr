@@ -570,7 +570,7 @@ bool RotationLidarCalibration::ProcessRosbags(
     LOG(INFO) << "open ros2 bag path: " << bag_path_array[i];
     rosbag2_cpp::Reader reader;
     reader.open(bag_path_array[i]);
-    
+
     std::deque<EncoderMsg> encoder_msg_array;
     std::deque<CloudMsg> cloud_msg_array;
 

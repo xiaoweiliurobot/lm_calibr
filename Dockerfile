@@ -37,13 +37,8 @@ RUN apt-get install -y \
     python3-vcstool \
     build-essential
 
-# RUN rosdep update
-
-# COPY ./docker/Livox-SDK /root/software/Livox-SDK
-# WORKDIR /root/software/Livox-SDK/build
-
-COPY ./docker/Livox-SDK2 /root/software/Livox-SDK2
-WORKDIR /root/software/Livox-SDK2/build
+# COPY ./docker/Livox-SDK2 /root/software/Livox-SDK2
+# WORKDIR /root/software/Livox-SDK2/build
 
 RUN cmake .. && make -j8 && make install
 

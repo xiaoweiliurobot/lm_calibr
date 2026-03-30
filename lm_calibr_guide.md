@@ -1,13 +1,14 @@
 # LM-Calibr Guide
 
-To facilitate testing, we provide datasets for both simulated and real-world scenarios ([Baidu Netdisk](https://pan.baidu.com/s/1hZgSJ6Y6L0QfLroh_AOyRg?pwd=yncu)). Please place the downloaded datasets into the `lm_calibr/data` directory.
+To facilitate testing, we provide datasets for both simulated and real-world scenarios ([Baidu Netdisk](https://pan.baidu.com/s/1hZgSJ6Y6L0QfLroh_AOyRg?pwd=yncu)). Please place the downloaded datasets into the `/root/workspace/data` directory.
+
+The following commands all use the default workspace as `/root/workspace`. If you are not using Docker to start the application, please replace the workspace path accordingly.
 
 ## 0.Compile
-The initial compilation requires running the compilation script in src/livox_ros_driver2.
 ```bash
-./src/livox_ros_driver2/build.sh humble
+cd /root/workspace
+colcon build
 ```
-After that, you only need to run `colcon build` in your workspace to compile.
 
 ## 1. Calibration in Simulation
 

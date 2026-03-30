@@ -8,15 +8,14 @@
 #include "lm_calibr/rotation_lidar_calibration.h"
 #include "rclcpp/rclcpp.hpp"
 
-
-
 dev_tools::Timer timer;
 
 int main(int argc, char** argv) {
   rclcpp::init(argc, argv);
   auto node = std::make_shared<rclcpp::Node>("sim_calib_node");
 
-  std::string package_path = ament_index_cpp::get_package_share_directory("lm_calibr");
+  std::string package_path =
+      ament_index_cpp::get_package_share_directory("lm_calibr");
   dev_tools::Logger::Config logger_config;
   logger_config.log_prefix = false;
   auto nonros_args = rclcpp::remove_ros_arguments(argc, argv);
@@ -29,7 +28,7 @@ int main(int argc, char** argv) {
                            logger_argv.data(),
                            package_path,
                            logger_config);
-                           
+
   node->declare_parameter<std::string>("lidar_topic", "/cloud");
   node->declare_parameter<std::string>("encoder_topic", "/encoder");
   node->declare_parameter<int>("random_seed", 0);
@@ -60,8 +59,10 @@ int main(int argc, char** argv) {
   int max_iter = node->get_parameter("max_iter").as_int();
   double downsample_size = node->get_parameter("downsample_size").as_double();
   double max_voxel_size = node->get_parameter("max_voxel_size").as_double();
-  int max_layer = node->get_parameter("max_layer").as_int();;
-  std::vector<double> eigen_threshold = node->get_parameter("eigen_threshold").as_double_array();
+  int max_layer = node->get_parameter("max_layer").as_int();
+  ;
+  std::vector<double> eigen_threshold =
+      node->get_parameter("eigen_threshold").as_double_array();
   if (eigen_threshold.size() != static_cast<size_t>(max_layer + 1)) {
     LOG(ERROR) << "eigen_threshold.size() != max_layer + 1" << std::endl;
     exit(0);
@@ -69,7 +70,8 @@ int main(int argc, char** argv) {
   double rosbag_skip = node->get_parameter("rosbag_skip").as_double();
   double angle_threshold = node->get_parameter("angle_threshold").as_double();
 
-  std::vector<std::string> bag_path_array = node->get_parameter("bag_path").as_string_array();
+  std::vector<std::string> bag_path_array =
+      node->get_parameter("bag_path").as_string_array();
   if (bag_path_array.empty()) {
     LOG(ERROR) << "bag_path_array is empty, force exit" << std::endl;
     exit(0);
@@ -175,6 +177,7 @@ int main(int argc, char** argv) {
   config.eigen_threshold = eigen_threshold;
   config.DH_type = DH_type;
   config.angle_threshold = angle_threshold;
+  config.rosbag_skip = rosbag_skip;
   RotationLidarCalibration calib(config);
 
   std::string database_path = package_path + "/result/calib_database";

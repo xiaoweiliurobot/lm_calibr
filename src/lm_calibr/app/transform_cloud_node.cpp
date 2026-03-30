@@ -1,9 +1,9 @@
-#include <rclcpp/rclcpp.hpp>
-#include <ament_index_cpp/get_package_share_directory.hpp>
-
 #include <development_tools/tools.h>
-#include <mutex>
 #include <signal.h>
+
+#include <ament_index_cpp/get_package_share_directory.hpp>
+#include <mutex>
+#include <rclcpp/rclcpp.hpp>
 
 #include "lm_calibr/rotation_lidar_calibration.h"
 
@@ -26,10 +26,13 @@ std::mutex array_mutex;
 
 double lidar_sample_time = 1.0 / 10.0;
 
-rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr calibrated_cloud_pub;
-rclcpp::Publisher<livox_ros_driver2::msg::CustomMsg>::SharedPtr calibrated_livox_pub;
+rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr
+    calibrated_cloud_pub;
+rclcpp::Publisher<livox_ros_driver2::msg::CustomMsg>::SharedPtr
+    calibrated_livox_pub;
 
-void LivoxCallback(const livox_ros_driver2::msg::CustomMsg::ConstSharedPtr msg_ptr) {
+void LivoxCallback(
+    const livox_ros_driver2::msg::CustomMsg::ConstSharedPtr msg_ptr) {
   LOG(INFO) << "LivoxCallback";
   static double last_timestamp = 0.0;
 
@@ -37,8 +40,7 @@ void LivoxCallback(const livox_ros_driver2::msg::CustomMsg::ConstSharedPtr msg_p
   cloud_msg_ptr->livox_cloud_ptr =
       std::make_shared<livox_ros_driver2::msg::CustomMsg>(*msg_ptr);
 
-  cloud_msg_ptr->timestamp =
-      rclcpp::Time(msg_ptr->header.stamp).seconds();
+  cloud_msg_ptr->timestamp = rclcpp::Time(msg_ptr->header.stamp).seconds();
 
   std::sort(cloud_msg_ptr->livox_cloud_ptr->points.begin(),
             cloud_msg_ptr->livox_cloud_ptr->points.end(),
@@ -59,7 +61,8 @@ void LivoxCallback(const livox_ros_driver2::msg::CustomMsg::ConstSharedPtr msg_p
   }
 }
 
-void EncoderCallback(const sensor_msgs::msg::JointState::ConstSharedPtr msg_ptr) {
+void EncoderCallback(
+    const sensor_msgs::msg::JointState::ConstSharedPtr msg_ptr) {
   // LOG(INFO) << "EncoderCallback";
   static double last_timestamp = 0.0;
 
@@ -124,7 +127,6 @@ void Process() {
 
     if (encoder_array[i]->timestamp <= pt_time &&
         pt_time <= encoder_array[i + 1]->timestamp) {
-
       double angle = RotationLidarCalibration::AngleInterpolate(
           encoder_array[i]->angle,
           encoder_array[i]->timestamp,
@@ -135,12 +137,10 @@ void Process() {
       Eigen::Matrix3d R_z_theta_1 =
           Eigen::AngleAxisd(angle, Eigen::Vector3d::UnitZ()).toRotationMatrix();
 
-      Eigen::Matrix3d R_B_L =
-          R_z_theta_1 * R_x_phi_1 * R_z_theta_2 * R_x_phi_2;
+      Eigen::Matrix3d R_B_L = R_z_theta_1 * R_x_phi_1 * R_z_theta_2 * R_x_phi_2;
 
       Eigen::Vector3d t_B_L =
-          R_z_theta_1 * R_x_phi_1 * R_z_theta_2 * t_1 +
-          R_z_theta_1 * t_2;
+          R_z_theta_1 * R_x_phi_1 * R_z_theta_2 * t_1 + R_z_theta_1 * t_2;
 
       Eigen::Vector3d p_L(livox_pt.x, livox_pt.y, livox_pt.z);
       Eigen::Vector3d p_B = R_B_L * p_L + t_B_L;
@@ -177,12 +177,9 @@ void Process() {
   calibrated_cloud_pub->publish(calibrated_cloud_msg);
 
   calibrated_livox_msg.header = cloud_msg_ptr->livox_cloud_ptr->header;
-  calibrated_livox_msg.lidar_id =
-      cloud_msg_ptr->livox_cloud_ptr->lidar_id;
-  calibrated_livox_msg.point_num =
-      calibrated_livox_msg.points.size();
-  calibrated_livox_msg.timebase =
-      cloud_msg_ptr->livox_cloud_ptr->timebase;
+  calibrated_livox_msg.lidar_id = cloud_msg_ptr->livox_cloud_ptr->lidar_id;
+  calibrated_livox_msg.point_num = calibrated_livox_msg.points.size();
+  calibrated_livox_msg.timebase = cloud_msg_ptr->livox_cloud_ptr->timebase;
 
   calibrated_livox_pub->publish(calibrated_livox_msg);
 
@@ -193,15 +190,15 @@ bool flag_exit = false;
 
 void SigHandle(int sig) {
   flag_exit = true;
-  RCLCPP_WARN(rclcpp::get_logger("transform_cloud_node"),
-              "catch sig %d", sig);
+  RCLCPP_WARN(rclcpp::get_logger("transform_cloud_node"), "catch sig %d", sig);
 }
 
 int main(int argc, char** argv) {
   rclcpp::init(argc, argv);
   auto node = std::make_shared<rclcpp::Node>("transform_cloud_node");
 
-  std::string package_path = ament_index_cpp::get_package_share_directory("lm_calibr");
+  std::string package_path =
+      ament_index_cpp::get_package_share_directory("lm_calibr");
   dev_tools::Logger::Config logger_config;
   logger_config.log_prefix = false;
   auto nonros_args = rclcpp::remove_ros_arguments(argc, argv);
@@ -267,13 +264,11 @@ int main(int argc, char** argv) {
   auto cloub_sub = node->create_subscription<livox_ros_driver2::msg::CustomMsg>(
       lidar_topic, 1000000, LivoxCallback);
 
-  auto encoder_sub =
-      node->create_subscription<sensor_msgs::msg::JointState>(
-          encoder_topic, 1000000, EncoderCallback);
+  auto encoder_sub = node->create_subscription<sensor_msgs::msg::JointState>(
+      encoder_topic, 1000000, EncoderCallback);
 
-  calibrated_cloud_pub =
-      node->create_publisher<sensor_msgs::msg::PointCloud2>(
-          "/calibrated_cloud", 10000);
+  calibrated_cloud_pub = node->create_publisher<sensor_msgs::msg::PointCloud2>(
+      "/calibrated_cloud", 10000);
 
   calibrated_livox_pub =
       node->create_publisher<livox_ros_driver2::msg::CustomMsg>(

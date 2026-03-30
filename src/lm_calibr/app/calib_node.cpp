@@ -11,7 +11,8 @@ int main(int argc, char** argv) {
   rclcpp::init(argc, argv);
   auto node = std::make_shared<rclcpp::Node>("calib_node");
 
-  std::string package_path = ament_index_cpp::get_package_share_directory("lm_calibr");
+  std::string package_path =
+      ament_index_cpp::get_package_share_directory("lm_calibr");
   dev_tools::Logger::Config logger_config;
   logger_config.log_prefix = false;
   auto nonros_args = rclcpp::remove_ros_arguments(argc, argv);
@@ -62,7 +63,7 @@ int main(int argc, char** argv) {
 
   std::vector<double> eigen_threshold;
   node->declare_parameter<std::vector<double>>("eigen_threshold",
-                                              std::vector<double>());
+                                               std::vector<double>());
   node->get_parameter("eigen_threshold", eigen_threshold);
 
   if (eigen_threshold.size() != static_cast<size_t>(max_layer + 1)) {
