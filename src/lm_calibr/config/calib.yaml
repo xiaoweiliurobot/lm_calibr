@@ -35,7 +35,7 @@ init_extrinsic:
   phi_2: 0.0
 
 bag_path:
-  - "/root/workspace/data/calib_mid360_s1.bag"
+  - "/root/workspace/data/calib_mid360_s1"
   # - "/root/workspace/data/calib_mid360_s2.bag"
   # - "/root/workspace/data/calib_mid360_s3.bag"
   # - "/root/workspace/data/calib_mid360_s4.bag"
