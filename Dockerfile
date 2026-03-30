@@ -39,8 +39,7 @@ RUN apt-get install -y \
 
 # COPY ./docker/Livox-SDK2 /root/software/Livox-SDK2
 # WORKDIR /root/software/Livox-SDK2/build
-
-RUN cmake .. && make -j8 && make install
+# RUN cmake .. && make -j8 && make install
 
 RUN echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
 

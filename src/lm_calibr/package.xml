@@ -12,6 +12,7 @@
   <depend>rclcpp</depend>
   <depend>rclpy</depend>
   <depend>std_msgs</depend>
+  <depend>development_tools</depend>
   <depend>livox_ros_driver2</depend>
   <exec_depend>launch</exec_depend>
   <exec_depend>launch_ros</exec_depend>
