@@ -1,4 +1,3 @@
-
 # Currently only supports livox_ros_driver/CustomMsg type
 lidar_topic: /livox/lidar
 encoder_topic: /joint_states
@@ -53,7 +52,7 @@ bag_path:
 #   phi_2: -0.2 # 0.0
 
 # bag_path:
-#   - "/root/workspace/data/calib_avia_s1.bag"
-#   - "/root/workspace/data/calib_avia_s2.bag"
-#   - "/root/workspace/data/calib_avia_s3.bag"
-#   - "/root/workspace/data/calib_avia_s4.bag"
+#   - "/root/workspace/data/calib_avia_s1"
+#   - "/root/workspace/data/calib_avia_s2"
+#   - "/root/workspace/data/calib_avia_s3"
+#   - "/root/workspace/data/calib_avia_s4"

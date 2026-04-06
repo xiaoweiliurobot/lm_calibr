@@ -33,7 +33,7 @@ rclcpp::Publisher<livox_ros_driver2::msg::CustomMsg>::SharedPtr
 
 void LivoxCallback(
     const livox_ros_driver2::msg::CustomMsg::ConstSharedPtr msg_ptr) {
-  LOG(INFO) << "LivoxCallback";
+  // LOG(INFO) << "LivoxCallback";
   static double last_timestamp = 0.0;
 
   std::shared_ptr<LivoxMsg> cloud_msg_ptr(new LivoxMsg());

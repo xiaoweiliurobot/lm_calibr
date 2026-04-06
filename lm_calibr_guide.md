@@ -2,9 +2,10 @@
 
 To facilitate testing, we provide datasets for both simulated and real-world scenarios ([Baidu Netdisk](https://pan.baidu.com/s/1hZgSJ6Y6L0QfLroh_AOyRg?pwd=yncu)). Please place the downloaded datasets into the `/root/workspace/data` directory.
 
-The following commands all use the default workspace as `/root/workspace`. If you are not using Docker to start the application, please replace the workspace path accordingly.
+> [!NOTE]
+> The following commands all use the default workspace as `/root/workspace`. If you are not using Docker to start the application, please replace the workspace path accordingly.
 
-## 0.Compile
+## 0. Compile
 ```bash
 cd /root/workspace
 colcon build
@@ -45,7 +46,7 @@ source install/setup.bash
 # Generate the uncalibrated point cloud
 ros2 launch lm_calibr check_dh.py
 # Visualize the uncalibrated point cloud
-pcl_viewer install/lm_calibr/share/lm_calibr/result
+pcl_viewer install/lm_calibr/share/lm_calibr/result/encoder_cloud.pcd
 ```
 
 **Correct DH Parameters**
